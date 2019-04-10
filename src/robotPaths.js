@@ -29,32 +29,67 @@ class RobotPaths {
 
   solve() {
     let totalPaths = 0;
-    const recursive = (row, col) => {
-      const boardLength = this.board.board.length - 1;
+    const recursive = (row, col, boardCopy) => {
+      const boardLength = boardCopy.length - 1;
       if (row === boardLength && col === boardLength) {
         totalPaths++;
         return;
       }
-      if (this.board.hasBeenVisited(row, col)) {
+      if (boardCopy.hasBeenVisited(row, col)) {
         return;
       }
-      this.board.togglePiece(row, col);
+      boardCopy.togglePiece(row, col);
 
       if (row !== boardLength) {
-        recursive(row + 1, col);
+        recursive(
+          row + 1,
+          col,
+          Object.assign(
+            Object.create(Object.getPrototypeOf(boardCopy)),
+            boardCopy
+          )
+        );
       }
       if (row !== 0) {
-        recursive(row - 1, col);
+        recursive(
+          row - 1,
+          col,
+          Object.assign(
+            Object.create(Object.getPrototypeOf(boardCopy)),
+            boardCopy
+          )
+        );
       }
       if (col !== boardLength) {
-        recursive(row, col + 1);
+        recursive(
+          row,
+          col + 1,
+          Object.assign(
+            Object.create(Object.getPrototypeOf(boardCopy)),
+            boardCopy
+          )
+        );
       }
       if (col !== 0) {
-        recursive(row, col - 1);
+        recursive(
+          row,
+          col - 1,
+          Object.assign(
+            Object.create(Object.getPrototypeOf(boardCopy)),
+            boardCopy
+          )
+        );
       }
     };
 
-    recursive(0, 0);
+    recursive(
+      0,
+      0,
+      Object.assign(
+        Object.create(Object.getPrototypeOf(this.board)),
+        this.board
+      )
+    );
 
     return totalPaths;
   }

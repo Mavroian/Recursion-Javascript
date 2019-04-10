@@ -1,5 +1,5 @@
 const { expect } = require("chai");
-const { RobotPaths } = require("../src/robotPaths");
+const { RobotPaths } = require("../src/robotPaths").default;
 
 describe("robotPaths", () => {
   it("should exist", () => {
@@ -33,7 +33,7 @@ describe("robotPaths", () => {
     expect(result).to.equal(2);
   });
 
-  it("should correctly identify the number of unique paths for a 3x3 grid", () => {
+  it.only("should correctly identify the number of unique paths for a 3x3 grid", () => {
     const result = new RobotPaths(3).solve();
     expect(result).to.equal(12);
   });
