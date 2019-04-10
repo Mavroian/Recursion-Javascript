@@ -29,68 +29,28 @@ class RobotPaths {
 
   solve() {
     let totalPaths = 0;
-    const recursive = (row, col, boardCopy) => {
-      const boardLength = boardCopy.length - 1;
-      if (row === boardLength && col === boardLength) {
+    const countPaths = (row, col) => {
+      const boardLength = this.board.board.length;
+      if (row === boardLength - 1 && col === boardLength - 1) {
         totalPaths++;
         return;
       }
-      if (boardCopy.hasBeenVisited(row, col)) {
+      if (row < 0 || row >= boardLength || col < 0 || col >= boardLength) {
         return;
       }
-      boardCopy.togglePiece(row, col);
-
-      if (row !== boardLength) {
-        recursive(
-          row + 1,
-          col,
-          Object.assign(
-            Object.create(Object.getPrototypeOf(boardCopy)),
-            boardCopy
-          )
-        );
-      }
-      if (row !== 0) {
-        recursive(
-          row - 1,
-          col,
-          Object.assign(
-            Object.create(Object.getPrototypeOf(boardCopy)),
-            boardCopy
-          )
-        );
-      }
-      if (col !== boardLength) {
-        recursive(
-          row,
-          col + 1,
-          Object.assign(
-            Object.create(Object.getPrototypeOf(boardCopy)),
-            boardCopy
-          )
-        );
-      }
-      if (col !== 0) {
-        recursive(
-          row,
-          col - 1,
-          Object.assign(
-            Object.create(Object.getPrototypeOf(boardCopy)),
-            boardCopy
-          )
-        );
+      if (this.board.hasBeenVisited(row, col)) {
+        return;
+      } else {
+        this.board.togglePiece(row, col);
+        countPaths(row, col + 1);
+        countPaths(row + 1, col);
+        countPaths(row, col - 1);
+        countPaths(row - 1, col);
+        this.board.togglePiece(row, col);
       }
     };
 
-    recursive(
-      0,
-      0,
-      Object.assign(
-        Object.create(Object.getPrototypeOf(this.board)),
-        this.board
-      )
-    );
-
+    countPaths(0, 0);
     return totalPaths;
   }
 }
