@@ -28,7 +28,35 @@ class RobotPaths {
   }
 
   solve() {
-    // Your code here.
+    let totalPaths = 0;
+    const recursive = (row, col) => {
+      const boardLength = this.board.board.length - 1;
+      if (row === boardLength && col === boardLength) {
+        totalPaths++;
+        return;
+      }
+      if (this.board.hasBeenVisited(row, col)) {
+        return;
+      }
+      this.board.togglePiece(row, col);
+
+      if (row !== boardLength) {
+        recursive(row + 1, col);
+      }
+      if (row !== 0) {
+        recursive(row - 1, col);
+      }
+      if (col !== boardLength) {
+        recursive(row, col + 1);
+      }
+      if (col !== 0) {
+        recursive(row, col - 1);
+      }
+    };
+
+    recursive(0, 0);
+
+    return totalPaths;
   }
 }
 
