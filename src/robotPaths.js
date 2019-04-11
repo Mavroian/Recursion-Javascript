@@ -40,14 +40,13 @@ class RobotPaths {
       }
       if (this.board.hasBeenVisited(row, col)) {
         return;
-      } else {
-        this.board.togglePiece(row, col);
-        countPaths(row, col + 1);
-        countPaths(row + 1, col);
-        countPaths(row, col - 1);
-        countPaths(row - 1, col);
-        this.board.togglePiece(row, col);
       }
+      this.board.togglePiece(row, col);
+      countPaths(row, col + 1);
+      countPaths(row + 1, col);
+      countPaths(row, col - 1);
+      countPaths(row - 1, col);
+      this.board.togglePiece(row, col);
     };
 
     countPaths(0, 0);
